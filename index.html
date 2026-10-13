@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Impressora braille de baixo custo</title>
+<meta name="description" content="Impressora braille para folha A4 feita com MDF cortado a laser, peças impressas em 3D e eletrônica de impressora 3D. Com programa, firmware, simulador e manuais de montagem.">
+<style>
+  :root {
+    --fundo: #f4f1ea; --painel: #fffdf8; --texto: #1d2733; --suave: #586474; --borda: #ddd6c7;
+    --destaque: #c2570a; --destaque-forte: #9f4505; --sobre-destaque: #ffffff; --faixa: #1d2733; --sobre-faixa: #f4f1ea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --fundo: #14181e; --painel: #1c222b; --texto: #e9edf2; --suave: #9ba7b6; --borda: #323b48;
+      --destaque: #f08a3c; --destaque-forte: #ffa35c; --sobre-destaque: #14181e; --faixa: #0e1116; --sobre-faixa: #e9edf2; }
+  }
+  :root[data-theme="dark"] { --fundo: #14181e; --painel: #1c222b; --texto: #e9edf2; --suave: #9ba7b6; --borda: #323b48;
+      --destaque: #f08a3c; --destaque-forte: #ffa35c; --sobre-destaque: #14181e; --faixa: #0e1116; --sobre-faixa: #e9edf2; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--fundo); color: var(--texto); font: 17px/1.6 system-ui, "Segoe UI", Roboto, Arial, sans-serif; }
+  a { color: var(--destaque-forte); }
+  img { max-width: 100%; height: auto; display: block; }
+  .dentro { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  nav.topo { position: sticky; top: 0; z-index: 5; background: var(--painel); border-bottom: 1px solid var(--borda); }
+  nav.topo .dentro { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 22px; padding-top: 10px; padding-bottom: 10px; }
+  nav.topo .nome { font-weight: 700; letter-spacing: -0.01em; margin-right: auto; color: var(--texto); text-decoration: none; }
+  nav.topo .nome span { color: var(--destaque); margin-right: 8px; }
+  nav.topo a.item { color: var(--suave); text-decoration: none; font-size: 15px; }
+  nav.topo a.item:hover { color: var(--texto); }
+  header.capa { padding: 56px 0 40px; }
+  .capa .dentro { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 36px; align-items: center; }
+  .braille { font-size: 30px; color: var(--destaque); letter-spacing: 2px; line-height: 1; margin: 0 0 14px; }
+  h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 16px; text-wrap: balance; }
+  .capa p.sub { font-size: 19px; color: var(--suave); margin: 0 0 24px; max-width: 56ch; }
+  .botoes { display: flex; flex-wrap: wrap; gap: 10px; }
+  .botao { display: inline-block; padding: 11px 20px; border-radius: 10px; border: 1px solid var(--borda); background: var(--painel);
+           color: var(--texto); text-decoration: none; font-weight: 600; }
+  .botao:hover { border-color: var(--destaque); }
+  .botao.principal { background: var(--destaque); border-color: var(--destaque); color: var(--sobre-destaque); }
+  .botao.principal:hover { background: var(--destaque-forte); }
+  .capa figure { margin: 0; background: #ffffff; border: 1px solid var(--borda); border-radius: 16px; overflow: hidden; }
+  section { padding: 44px 0; border-top: 1px solid var(--borda); }
+  h2 { font-size: 30px; letter-spacing: -0.02em; margin: 0 0 6px; }
+  .guia { color: var(--suave); margin: 0 0 24px; max-width: 70ch; }
+  h3 { font-size: 19px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .grade { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .cartao { background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; padding: 18px 20px; }
+  .cartao p { margin: 0; color: var(--suave); font-size: 16px; }
+  .cartao .n { font-size: 13px; font-weight: 700; color: var(--destaque); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .duas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; align-items: center; }
+  .foto { background: #ffffff; border: 1px solid var(--borda); border-radius: 14px; overflow: hidden; }
+  .foto figcaption { font-size: 14px; color: #586474; padding: 8px 14px; border-top: 1px solid #e6e0d2; background: #fffdf8; }
+  ul.limpa { padding-left: 20px; margin: 0; }
+  ul.limpa li { margin: 6px 0; }
+  ol.passos { counter-reset: p; list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  ol.passos li { counter-increment: p; position: relative; padding: 16px 18px 16px 62px; background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; }
+  ol.passos li::before { content: counter(p); position: absolute; left: 18px; top: 16px; width: 30px; height: 30px; border-radius: 50%;
+                         background: var(--destaque); color: var(--sobre-destaque); font-weight: 700; display: grid; place-items: center; }
+  ol.passos li strong { display: block; }
+  ol.passos li span { color: var(--suave); font-size: 16px; }
+  code { font: 15px ui-monospace, Consolas, monospace; background: var(--painel); border: 1px solid var(--borda); padding: 1px 6px; border-radius: 6px; }
+  .tabela { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 16px; background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); }
+  .numeros { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  .numeros div { background: var(--painel); border: 1px solid var(--borda); border-radius: 14px; padding: 16px 18px; }
+  .numeros b { display: block; font-size: 30px; letter-spacing: -0.02em; line-height: 1.1; }
+  .numeros span { color: var(--suave); font-size: 15px; }
+  .aviso { border-left: 4px solid var(--destaque); background: var(--painel); padding: 14px 18px; border-radius: 0 12px 12px 0; color: var(--suave); }
+  .aviso strong { color: var(--texto); }
+  footer { background: var(--faixa); color: var(--sobre-faixa); padding: 34px 0; font-size: 15px; }
+  footer a { color: #f6b27a; }
+  footer p { margin: 0 0 8px; max-width: 80ch; opacity: .9; }
+  :focus-visible { outline: 3px solid var(--destaque); outline-offset: 2px; }
+  @media (max-width: 860px) {
+    .capa .dentro, .duas { grid-template-columns: minmax(0, 1fr); }
+    header.capa { padding: 34px 0 28px; }
+    section { padding: 34px 0; }
+    .dentro { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+<nav class="topo" aria-label="Seções">
+  <div class="dentro">
+    <a class="nome" href="#topo"><span aria-hidden="true">⠿</span>Impressora braille</a>
+    <a class="item" href="#como">Como funciona</a>
+    <a class="item" href="#programa">Programa</a>
+    <a class="item" href="#instalar">Instalar</a>
+    <a class="item" href="#montar">Montar</a>
+    <a class="item" href="https://github.com/murilo999-666/impressora-braille">GitHub</a>
+  </div>
+</nav>
+
+<header class="capa" id="topo">
+  <div class="dentro">
+    <div>
+      <p class="braille" aria-hidden="true">⠃⠗⠁⠊⠇⠇⠑</p>
+      <h1>Impressora braille que uma escola consegue construir</h1>
+      <p class="sub">MDF cortado a laser, peças impressas em 3D e a eletrônica de uma impressora 3D comum. Você solta um arquivo do Word, um PDF ou um texto no programa e ela devolve a folha em braille, formatada nas normas brasileiras.</p>
+      <div class="botoes">
+        <a class="botao principal" href="software/index.html">Abrir o programa</a>
+        <a class="botao" href="simulador/index.html">Ver funcionando em 3D</a>
+        <a class="botao" href="#montar">Manuais de montagem</a>
+      </div>
+    </div>
+    <figure><img src="docs/imagens/montagem_frente_dir.png" alt="Modelo 3D da impressora: caixa de MDF aberta em cima, com o carro do solenoide sobre a folha e o manípulo do papel na lateral" width="1069" height="996"></figure>
+  </div>
+</header>
+
+<section id="como">
+  <div class="dentro">
+    <h2>Como funciona</h2>
+    <p class="guia">Um ponto por vez: um punção desce, empurra o papel para dentro de um furo e o relevo fica. O resto da máquina existe para pôr o punção no lugar certo.</p>
+    <div class="grade">
+      <div class="cartao"><div class="n">1 · arquivo</div><h3>O texto vira celas</h3><p>O programa lê o arquivo, traduz para o braille do português e arruma as linhas: título no centro, parágrafo na terceira cela, número da página no alto.</p></div>
+      <div class="cartao"><div class="n">2 · papel</div><h3>A folha entra por trás</h3><p>Dois roletes de borracha puxam a folha A4 e a empurram deitada sobre a mesa, 2,5 mm por vez.</p></div>
+      <div class="cartao"><div class="n">3 · batida</div><h3>O punção bate de cima</h3><p>Um carro leva o solenoide por cima da folha. Outro, por baixo, leva a matriz. Os dois são puxados pelo mesmo eixo e andam sempre juntos.</p></div>
+      <div class="cartao"><div class="n">4 · leitura</div><h3>O ponto sai embaixo</h3><p>Como a folha entra com o topo na frente, o texto já sai na ordem certa. É só pegar a folha pela borda da frente e virar.</p></div>
+    </div>
+    <div class="duas" style="margin-top:26px">
+      <figure class="foto"><img src="docs/imagens/aberta_lado_direito.png" alt="Vista lateral em corte: solenoide no carro de cima, matriz no carro de baixo, roletes atrás e eletrônica no piso" loading="lazy" width="822" height="660"><figcaption>Vista de lado, sem a lateral direita. A folha entra pela direita.</figcaption></figure>
+      <div>
+        <h3>O que tem dentro</h3>
+        <ul class="limpa">
+          <li>Arduino Mega 2560 com RAMPS 1.4 e dois drivers de motor de passo</li>
+          <li>Dois motores NEMA 17: um para os carros, um para o papel</li>
+          <li>Um solenoide de 24 V, alimentado por um conversor que sobe os 12 V da fonte</li>
+          <li>Seis eixos de 8 mm, seis buchas lineares, seis rolamentos 608 e correias GT2</li>
+          <li>Sete chapas de MDF de 6 mm e 38 peças impressas (240 g de filamento)</li>
+          <li>Sensor de papel, aviso sonoro e três botões, para quem opera sem enxergar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="programa">
+  <div class="dentro">
+    <h2>O programa: do arquivo ao braille</h2>
+    <p class="guia">O Relevo roda no navegador, sem instalar nada. Ele conversa com a impressora pelo cabo USB.</p>
+    <div class="duas">
+      <figure class="foto"><img src="docs/imagens/relevo.png" alt="Tela do programa Relevo: à esquerda o texto do arquivo, à direita as folhas em braille com o texto em tinta acima de cada linha" loading="lazy" width="1440" height="1000"><figcaption>À esquerda o texto; à direita, as folhas como vão sair.</figcaption></figure>
+      <div>
+        <ul class="limpa">
+          <li><strong>Abre</strong> Word (.docx), PDF, texto (.txt), LibreOffice (.odt), página (.html), Markdown e braille pronto (.brf).</li>
+          <li><strong>Descobre a estrutura</strong>: estilo de título, letra maior, listas numeradas, negrito e itálico.</li>
+          <li><strong>Formata</strong> pelas Normas Técnicas para a Produção de Textos em Braille e pela Grafia Braille para a Língua Portuguesa.</li>
+          <li><strong>Mostra</strong> cada folha antes de imprimir, com o texto em tinta acima de cada linha, para quem enxerga conferir.</li>
+          <li><strong>Imprime</strong> folha por folha e avisa a hora de trocar o papel.</li>
+          <li><strong>Salva</strong> em .brf, o formato que as impressoras braille comerciais leem.</li>
+        </ul>
+        <p style="margin-top:16px"><a class="botao principal" href="software/index.html">Abrir o programa</a></p>
+      </div>
+    </div>
+    <h3 style="margin-top:30px">Braille não tem tamanho de letra</h3>
+    <p class="guia">Toda cela tem o mesmo tamanho. O que no papel comum se mostra com letra grande, negrito ou cor, em braille se mostra pela posição do texto e por alguns sinais.</p>
+    <div class="tabela"><table>
+      <thead><tr><th>No original</th><th>Em braille</th></tr></thead>
+      <tbody>
+        <tr><td>Título, letra grande</td><td>centralizado, entre linhas em branco; nunca sozinho no fim da folha</td></tr>
+        <tr><td>Parágrafo</td><td>começa na 3ª cela e continua na 1ª; não se pula linha entre parágrafos</td></tr>
+        <tr><td>Itens de lista e versos</td><td>começam na 1ª cela e continuam na 3ª</td></tr>
+        <tr><td>Negrito, itálico, sublinhado</td><td>um sinal só para os três (pontos 3-5), antes e depois do trecho</td></tr>
+        <tr><td>Maiúsculas e números</td><td>sinal de maiúscula (pontos 4-6) e sinal de número (pontos 3-4-5-6)</td></tr>
+        <tr><td>Número da página</td><td>na 1ª linha, à direita; o da página do original, a partir da 3ª cela</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="instalar">
+  <div class="dentro">
+    <h2>Instalar e usar</h2>
+    <p class="guia">Depois da máquina montada, são quatro passos. O programa não precisa de instalação; o firmware se grava uma vez.</p>
+    <ol class="passos">
+      <li><strong>Grave o firmware</strong><span>Abra <code>firmware/ImpressoraBraille/ImpressoraBraille.ino</code> na Arduino IDE, escolha a placa Arduino Mega 2560 e clique em Carregar. Não usa biblioteca nenhuma.</span></li>
+      <li><strong>Abra o programa</strong><span>Pelo botão desta página, no Microsoft Edge ou no Google Chrome, num computador. Sem internet também funciona: baixe o projeto pelo GitHub (Code, Download ZIP) e abra <code>software/index.html</code> com dois cliques.</span></li>
+      <li><strong>Conecte</strong><span>Ligue o cabo USB e a fonte de 12 V, clique em Conectar e escolha a porta do Arduino. Na aba Impressora, clique em Referenciar carro e depois no teste Celas cheias.</span></li>
+      <li><strong>Imprima</strong><span>Solte o arquivo na aba Documento, confira as folhas e clique em Imprimir. Encoste a folha nos roletes quando a impressora apitar.</span></li>
+    </ol>
+    <p class="aviso" style="margin-top:18px"><strong>Navegador.</strong> A conversa pelo USB usa a Web Serial, que existe no Edge e no Chrome de computador (Windows, Linux, macOS e ChromeOS). No Firefox, no Safari e no celular o programa abre e formata, mas não imprime.</p>
+  </div>
+</section>
+
+<section id="montar">
+  <div class="dentro">
+    <h2>Montar</h2>
+    <p class="guia">Tudo o que se corta, imprime e liga está no repositório, com um manual para cada parte.</p>
+    <div class="grade">
+      <div class="cartao"><div class="n">Estrutura</div><h3><a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/06-guia-de-montagem.md">Guia de montagem</a></h3><p>Nove etapas, da preparação das peças ao alinhamento do punção com a matriz. O <a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/03-projeto-mecanico.md">projeto mecânico</a> explica cada conjunto e as contas.</p></div>
+      <div class="cartao"><div class="n">Elétrica</div><h3><a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/04-esquema-eletrico.md">Esquema e ligações</a></h3><p>Diagrama de ligação, circuito do solenoide, tabela de pinos, ajuste dos drivers e conferência antes de ligar.</p></div>
+      <div class="cartao"><div class="n">Software</div><h3><a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/07-firmware-e-software.md">Firmware e programa</a></h3><p>Como gravar, os comandos, os parâmetros e o <a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/11-programa-relevo.md">manual do Relevo</a> com as regras de formatação.</p></div>
+      <div class="cartao"><div class="n">Depois de montar</div><h3><a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/08-calibracao-e-testes.md">Calibração e testes</a></h3><p>27 testes com critério para passar, do multímetro na fonte à folha cheia, e os experimentos para medir o ponto.</p></div>
+      <div class="cartao"><div class="n">Antes de tudo</div><h3><a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/05-lista-de-compras.md">Lista de compras</a></h3><p>O que é obrigatório, o que é recomendado e por quê. Os parafusos são contados pelo próprio modelo 3D.</p></div>
+      <div class="cartao"><div class="n">Para entender</div><h3><a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/01-pesquisa-braille.md">Pesquisa sobre o braille</a></h3><p>A cela, o braille do português, as medidas do ponto e como uma impressora marca o papel.</p></div>
+    </div>
+
+    <h3 style="margin-top:30px">Arquivos para fabricar</h3>
+    <div class="duas">
+      <figure class="foto"><img src="docs/imagens/mesa_1.png" alt="Mapa da mesa de impressão 1: 22 peças arrumadas numa mesa de 250 por 250 milímetros" loading="lazy" width="700" height="730"><figcaption>As 38 peças cabem em duas mesas de 250 × 250 mm.</figcaption></figure>
+      <div class="tabela"><table>
+        <thead><tr><th>O quê</th><th>Onde</th></tr></thead>
+        <tbody>
+          <tr><td>Impressão 3D, pronta para fatiar</td><td><code>cad/saida/mesas_250x250/</code>: duas mesas em .3mf e .stl</td></tr>
+          <tr><td>Impressão 3D, peça por peça</td><td><code>cad/saida/stl/</code>: 24 modelos, já deitados</td></tr>
+          <tr><td>Corte a laser do MDF 6 mm</td><td><code>cad/saida/corte_laser/</code>: .dxf e .svg, 3 pranchas de 600 × 400 mm</td></tr>
+          <tr><td>Modelo 3D completo</td><td><code>cad/impressora_braille.FCStd</code> (FreeCAD) e .step</td></tr>
+          <tr><td>Esquemas</td><td><code>eletrica/</code>: .png e .svg</td></tr>
+          <tr><td>Firmware</td><td><code>firmware/ImpressoraBraille/</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <figure class="foto" style="margin-top:22px"><img src="eletrica/esquema_ligacao.png" alt="Diagrama de ligação elétrica: fonte de 12 volts, fusível, chave, RAMPS 1.4, conversor para 24 volts, solenoide, dois motores, fim de curso e sensor de papel" loading="lazy" width="1470" height="960"><figcaption>Ligação elétrica completa. O solenoide tem alimentação própria de 24 V.</figcaption></figure>
+  </div>
+</section>
+
+<section id="numeros">
+  <div class="dentro">
+    <h2>Números</h2>
+    <div class="numeros">
+      <div><b>30 × 23</b><span>celas por linha e linhas por folha A4</span></div>
+      <div><b>8 pontos/s</b><span>uma folha cheia em 4 a 8 minutos</span></div>
+      <div><b>2,5 · 6 · 10 mm</b><span>entre pontos, entre celas, entre linhas</span></div>
+      <div><b>330 × 178 × 236</b><span>milímetros, sem as bandejas</span></div>
+      <div><b>12 V · 2,3 A</b><span>de pico; fonte de 5 A</span></div>
+      <div><b>100 testes</b><span>automáticos do tradutor e da formatação</span></div>
+    </div>
+    <p class="aviso" style="margin-top:22px"><strong>Estado do projeto.</strong> O projeto está completo e conferido no computador: modelo 3D sem interferência entre as 276 peças, firmware compilando e tradutor testado. O protótipo ainda não foi montado, então força do solenoide, altura do ponto e tração do papel ainda precisam ser medidas na máquina real. O <a href="https://github.com/murilo999-666/impressora-braille/blob/main/docs/09-plano-de-tarefas.md">plano de tarefas</a> mostra o que falta.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="dentro">
+    <p><strong>Impressora braille de baixo custo</strong>, projeto escolar para a FEBRACE. Código, modelos e manuais em <a href="https://github.com/murilo999-666/impressora-braille">github.com/murilo999-666/impressora-braille</a>.</p>
+    <p>A ideia dos dois carros sincronizados e o uso do sextavado de um parafuso M3 como matriz vêm da <a href="https://github.com/braillerap/BrailleRap">BrailleRAP</a> (CERN OHL 1.2). A tabela braille segue a Grafia Braille para a Língua Portuguesa (MEC, 2018) e foi conferida com o liblouis. A formatação segue as Normas Técnicas para a Produção de Textos em Braille (MEC).</p>
+    <p>O programa usa pdf.js (Mozilla, Apache 2.0) para ler PDF e o simulador usa three.js (MIT).</p>
+  </div>
+</footer>
+</body>
+</html>
