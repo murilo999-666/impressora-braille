@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador Braille</title>
+<style>
+  :root {
+    --fundo: #f3f4f6; --painel: #ffffff; --texto: #1c2430; --suave: #5b6675; --borda: #d7dce3;
+    --destaque: #d9620b; --destaque-texto: #ffffff; --campo: #ffffff; --cena: #e9ecf1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fundo: #14181e; --painel: #1c222b; --texto: #e8ecf1; --suave: #9aa6b5; --borda: #313a47;
+      --destaque: #f08a3c; --destaque-texto: #14181e; --campo: #141a21; --cena: #232a34;
+    }
+  }
+  :root[data-theme="dark"] {
+    --fundo: #14181e; --painel: #1c222b; --texto: #e8ecf1; --suave: #9aa6b5; --borda: #313a47;
+    --destaque: #f08a3c; --destaque-texto: #14181e; --campo: #141a21; --cena: #232a34;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--fundo); color: var(--texto); font: 15px/1.45 system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+         display: flex; overflow: hidden; }
+  #cena { flex: 1 1 auto; min-width: 0; position: relative; background: var(--cena); }
+  #cena canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  #dica { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--suave); pointer-events: none; }
+  #painel { flex: 0 0 348px; background: var(--painel); border-left: 1px solid var(--borda); padding: 14px 16px 20px;
+            overflow-y: auto; }
+  h1 { font-size: 18px; margin: 0 0 2px; letter-spacing: -0.01em; }
+  .sub { color: var(--suave); font-size: 13px; margin: 0 0 12px; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); margin: 16px 0 6px; }
+  textarea { width: 100%; height: 86px; resize: vertical; background: var(--campo); color: var(--texto);
+             border: 1px solid var(--borda); border-radius: 6px; padding: 8px; font: inherit; }
+  button, select { font: inherit; color: var(--texto); background: var(--campo); border: 1px solid var(--borda);
+                   border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+  button.principal { background: var(--destaque); color: var(--destaque-texto); border-color: var(--destaque); font-weight: 600; }
+  button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--destaque); outline-offset: 1px; }
+  .linha { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .linha label { display: flex; align-items: center; gap: 5px; font-size: 14px; }
+  .faixa { display: grid; grid-template-columns: 74px 1fr; gap: 8px; align-items: center; margin-top: 6px; font-size: 14px; }
+  input[type=range] { width: 100%; accent-color: var(--destaque); }
+  #estado { font-size: 13px; color: var(--suave); margin-top: 8px; font-variant-numeric: tabular-nums; min-height: 38px; }
+  #folha { width: 100%; border: 1px solid var(--borda); border-radius: 6px; background: #fbfaf5; display: block; margin-top: 4px; }
+  #braille { font-size: 22px; line-height: 1.25; white-space: pre; background: var(--campo); border: 1px solid var(--borda);
+             border-radius: 6px; padding: 6px 8px; max-height: 120px; overflow: auto; margin-top: 4px; }
+  .legenda { display: grid; grid-template-columns: 14px 1fr; gap: 4px 8px; font-size: 13px; color: var(--suave); align-items: center; }
+  .cor { width: 12px; height: 12px; border-radius: 3px; }
+  #erro { color: #c62828; font-size: 13px; white-space: pre-wrap; }
+  body.semui #painel, body.semui #dica { display: none; }
+  @media (max-width: 760px) {
+    body { flex-direction: column; overflow: auto; }
+    #cena { flex: 0 0 56vh; }
+    #painel { flex: 1 1 auto; border-left: 0; border-top: 1px solid var(--borda); }
+  }
+</style>
+</head>
+<body>
+<div id="cena"><div id="dica">arraste para girar · roda do mouse para aproximar · botão direito para mover</div></div>
+<aside id="painel">
+  <h1>Impressora braille</h1>
+  <p class="sub">Simulação do modelo 3D: o carro de cima leva o solenoide, que bate de cima para baixo contra a matriz do carro de baixo.</p>
+
+  <h2>Texto</h2>
+  <textarea id="texto" spellcheck="false" aria-label="Texto a imprimir">Feira Brasileira de Ciências e Engenharia 2027.
+Olá, mundo!</textarea>
+  <div class="linha">
+    <button class="principal" id="btImprimir">Imprimir</button>
+    <button id="btPausa">Pausar</button>
+    <button id="btZerar">Reiniciar</button>
+    <label>velocidade <select id="vel"><option value="1">1×</option><option value="4" selected>4×</option><option value="15">15×</option><option value="60">60×</option></select></label>
+  </div>
+  <div id="estado" role="status"></div>
+  <div id="erro"></div>
+
+  <h2>Folha, lado da leitura</h2>
+  <canvas id="folha" width="632" height="440" aria-label="Pré-visualização da folha"></canvas>
+  <div id="braille" aria-label="Texto em braille"></div>
+
+  <h2>Ver</h2>
+  <div class="linha">
+    <button data-vista="iso">Geral</button><button data-vista="frente">Frente</button>
+    <button data-vista="cima">Cima</button><button data-vista="tras">Trás</button><button data-vista="perto">Punção</button>
+  </div>
+  <div class="linha">
+    <label><input type="checkbox" id="ckMdf" checked> chapas de MDF</label>
+    <label><input type="checkbox" id="ckRaiox"> raio-x</label>
+    <label><input type="checkbox" id="ckFerr" checked> parafusos</label>
+  </div>
+  <div class="faixa"><span>Corte</span><input type="range" id="corte" min="0" max="100" value="0" aria-label="Plano de corte"></div>
+  <div class="faixa"><span>Explodir</span><input type="range" id="explodir" min="0" max="100" value="0" aria-label="Vista explodida"></div>
+
+  <h2>Cores</h2>
+  <div class="legenda">
+    <span class="cor" style="background:#d1a36b"></span><span>MDF cortado a laser</span>
+    <span class="cor" style="background:#f2801a"></span><span>impresso em 3D, peças que se movem</span>
+    <span class="cor" style="background:#2973bf"></span><span>impresso em 3D, suportes fixos</span>
+    <span class="cor" style="background:#4da659"></span><span>impresso em 3D, guias, travas e manípulo</span>
+    <span class="cor" style="background:#b8bdc4"></span><span>peças do estoque (eixos, polias, motores)</span>
+  </div>
+</aside>
+
+<script src="lib/three.min.js"></script>
+<script>window.THREE || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');</script>
+<script src="lib/OrbitControls.js"></script>
+<script>(window.THREE && THREE.OrbitControls) || document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>');</script>
+<script src="../software/braille-pt.js"></script>
+<script src="../software/leiaute.js"></script>
+<script src="modelo.js"></script>
+<script>
+"use strict";
+window.onerror = function (msg, src, lin) { document.getElementById("erro").textContent = "Erro: " + msg + " (linha " + lin + ")"; };
+
+(function () {
+  var M = window.MODELO, PAR = M.par, ESC = M.escala;
+  var Q = new URLSearchParams(location.search);
+  if (Q.get("ui") === "0") document.body.classList.add("semui");
+  if (Q.get("tema")) document.documentElement.setAttribute("data-theme", Q.get("tema"));
+  var CENTRO = new THREE.Vector3(PAR.W_IN / 2, 5, 105);
+
+  // ------------------------------------------------------------------ cena
+  var caixa = document.getElementById("cena");
+  var rend = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  rend.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  rend.localClippingEnabled = true;
+  caixa.insertBefore(rend.domElement, caixa.firstChild);
+  var cena = new THREE.Scene();
+  var cam = new THREE.PerspectiveCamera(32, 1, 10, 6000);
+  cam.up.set(0, 0, 1);
+  var ctl = new THREE.OrbitControls(cam, rend.domElement);
+  ctl.enableDamping = true; ctl.dampingFactor = 0.12;
+  cena.add(new THREE.HemisphereLight(0xffffff, 0x8a8f99, 0.92));
+  var sol = new THREE.DirectionalLight(0xffffff, 0.55); sol.position.set(380, -620, 760); cena.add(sol);
+  var sol2 = new THREE.DirectionalLight(0xffffff, 0.22); sol2.position.set(-500, 400, 300); cena.add(sol2);
+
+  function fundo() {
+    var escuro = getComputedStyle(document.documentElement).getPropertyValue("--cena").trim();
+    cena.background = new THREE.Color(escuro || "#e9ecf1");
+  }
+  fundo();
+  if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", fundo);
+
+  // grupos de movimento
+  var G = {};
+  ["fixo", "carro_sup", "carro_inf", "embolo", "eixo_papel", "eixo_vertical"].forEach(function (g) {
+    G[g] = new THREE.Group(); cena.add(G[g]);
+  });
+  var PIVO = { eixo_papel: new THREE.Vector3(0, PAR.Y_ROLO, PAR.Z_ROLO), eixo_vertical: new THREE.Vector3(PAR.X_EIXO_V, 0, 0) };
+  Object.keys(PIVO).forEach(function (g) { G[g].position.copy(PIVO[g]); });
+
+  function decod(b64, Tipo) {
+    var bin = atob(b64), n = bin.length, buf = new Uint8Array(n);
+    for (var i = 0; i < n; i++) buf[i] = bin.charCodeAt(i);
+    return new Tipo(buf.buffer);
+  }
+
+  var plano = new THREE.Plane(new THREE.Vector3(0, 1, 0), 1000);      // corte: esconde o que esta na frente
+  var matLinha = new THREE.LineBasicMaterial({ color: 0x20242b, transparent: true, opacity: 0.55, clippingPlanes: [plano] });
+  var malhas = [];
+  M.partes.forEach(function (p) {
+    var vi = decod(p.v, Int16Array), pos = new Float32Array(vi.length);
+    var piv = PIVO[p.g];
+    for (var i = 0; i < vi.length; i += 3) {
+      pos[i] = vi[i] * ESC - (piv ? piv.x : 0);
+      pos[i + 1] = vi[i + 1] * ESC - (piv ? piv.y : 0);
+      pos[i + 2] = vi[i + 2] * ESC - (piv ? piv.z : 0);
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setIndex(new THREE.BufferAttribute(decod(p.i, Uint16Array), 1));
+    geo.computeBoundingBox();
+    var metal = /aco|Polia|Eixo|Rolamento|Bucha|Acoplamento|Parafuso|Porca|Arruela/.test(p.p);
+    var mat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(p.c[0], p.c[1], p.c[2]), flatShading: true,
+      roughness: metal ? 0.45 : 0.82, metalness: metal ? 0.35 : 0.0, clippingPlanes: [plano], side: THREE.DoubleSide
+    });
+    var malha = new THREE.Mesh(geo, mat);
+    malha.userData = p;
+    if (p.t !== "ferragem") malha.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 30), matLinha));
+    var c = new THREE.Vector3(); geo.boundingBox.getCenter(c);
+    if (piv) c.add(piv);
+    malha.userData.centro = c;
+    (G[p.g] || G.fixo).add(malha);
+    malhas.push(malha);
+  });
+
+  // ------------------------------------------------------------------ papel e pontos
+  var papel = new THREE.Group(); cena.add(papel);
+  var folha = new THREE.Mesh(new THREE.BoxGeometry(PAR.PAPEL_W, PAR.PAPEL_L, 0.22),
+    new THREE.MeshStandardMaterial({ color: 0xfbfaf2, roughness: 0.95, clippingPlanes: [plano] }));
+  folha.position.set(PAR.X_PAPEL0 + PAR.PAPEL_W / 2, PAR.PAPEL_L / 2, PAR.Z_P + 0.13);
+  papel.add(folha);
+  var MAXP = 6000;
+  var covas = new THREE.InstancedMesh(new THREE.CircleGeometry(0.72, 12),
+    new THREE.MeshBasicMaterial({ color: 0x8f8a78, clippingPlanes: [plano] }), MAXP);
+  var relevos = new THREE.InstancedMesh(new THREE.SphereGeometry(0.75, 10, 6),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9, clippingPlanes: [plano] }), MAXP);
+  covas.count = 0; relevos.count = 0;
+  papel.add(covas); papel.add(relevos);
+  var mAux = new THREE.Matrix4();
+
+  // ------------------------------------------------------------------ trabalho de impressao
+  var cfg = Leiaute.config();
+  var PRONTAS = null;                 // linhas ja formatadas, vindas do programa Relevo (?celas=0a1f.00...)
+  if (Q.get("celas")) {
+    PRONTAS = Q.get("celas").split(".").map(function (h) {
+      var l = [];
+      for (var i = 0; i + 1 < h.length; i += 2) l.push(parseInt(h.substr(i, 2), 16) & 63);
+      return l;
+    });
+  }
+  var trab = { passos: [], pontos: [], i: 0, feito: 0, rodando: false, linhas: [] };
+  var est = { x: PAR.X_MIN, a: -70, z: 0, tPasso: 0 };      // a = avanco da folha alem da linha de puncao
+  var MOV = { vmax: 120, acel: 3000, vY: 30, tOn: 0.025, tOff: 0.030 };
+
+  function tempoX(d) {
+    d = Math.abs(d); if (d <= 0) return 0;
+    var da = MOV.vmax * MOV.vmax / MOV.acel;
+    return d < da ? 2 * Math.sqrt(d / MOV.acel) : d / MOV.vmax + MOV.vmax / MOV.acel;
+  }
+
+  function prepara() {
+    var tr = BraillePT.traduz(document.getElementById("texto").value);
+    var linhas = PRONTAS || BraillePT.quebra(tr.celas, cfg.celasPorLinha, 2);
+    linhas = linhas.slice(0, Leiaute.linhasQueCabem(cfg));
+    if (PRONTAS) tr = { avisos: [] };
+    var pg = Leiaute.pagina(linhas, cfg);
+    var passos = [{ t: "y", a: 0, rot: "papel entrando" }];
+    var x = PAR.X_MIN;
+    pg.fileiras.forEach(function (f) {
+      if (!f.us.length) return;
+      passos.push({ t: "y", a: f.v });
+      f.us.forEach(function (u) {
+        passos.push({ t: "x", x: cfg.xPapel0 + u });
+        passos.push({ t: "p", u: u, v: f.v });
+      });
+    });
+    passos.push({ t: "x", x: PAR.X_MIN });
+    var ultimo = pg.fileiras.length ? pg.fileiras[pg.fileiras.length - 1].v : 0;
+    passos.push({ t: "y", a: Math.min(ultimo + 70, cfg.papelAltura - cfg.distRoletePuncao), rot: "folha saindo" });
+    trab = { passos: passos, pontos: pg.pontos, i: 0, feito: 0, rodando: false, linhas: linhas, total: pg.pontos.length,
+             tempoReal: Leiaute.tempo(pg, cfg, MOV), avisos: tr.avisos };
+    est.x = PAR.X_MIN; est.a = -70; est.z = 0; est.tPasso = 0; est.x0 = est.x; est.a0 = est.a;
+    covas.count = 0; relevos.count = 0;
+    document.getElementById("braille").textContent = linhas.map(BraillePT.paraUnicode).join("\n");
+    desenhaFolha(); mostraEstado();
+  }
+
+  function marcaPonto(u, v) {
+    var n = covas.count;
+    if (n >= MAXP) return;
+    mAux.makeTranslation(PAR.X_PAPEL0 + u, v, PAR.Z_P + 0.26); covas.setMatrixAt(n, mAux);
+    mAux.makeTranslation(PAR.X_PAPEL0 + u, v, PAR.Z_P + 0.02); relevos.setMatrixAt(n, mAux);
+    covas.count = n + 1; relevos.count = n + 1;
+    covas.instanceMatrix.needsUpdate = true; relevos.instanceMatrix.needsUpdate = true;
+    trab.feito++;
+  }
+
+  function duracao(p) {
+    if (p.t === "x") return tempoX(p.x - est.x0);
+    if (p.t === "y") return Math.max(0.05, Math.abs(p.a - est.a0) / MOV.vY);
+    return MOV.tOn + MOV.tOff;
+  }
+
+  function avanca(dt) {
+    while (dt > 0 && trab.i < trab.passos.length) {
+      var p = trab.passos[trab.i];
+      if (est.tPasso === 0) { est.x0 = est.x; est.a0 = est.a; }
+      var dur = duracao(p);
+      var resto = dur - est.tPasso;
+      var usa = Math.min(resto, dt);
+      est.tPasso += usa; dt -= usa;
+      var k = dur > 0 ? est.tPasso / dur : 1;
+      var s = k < 0.5 ? 2 * k * k : 1 - 2 * (1 - k) * (1 - k);       // acelera e freia
+      if (p.t === "x") est.x = est.x0 + (p.x - est.x0) * s;
+      else if (p.t === "y") est.a = est.a0 + (p.a - est.a0) * k;
+      else {
+        var kOn = MOV.tOn / dur;
+        est.z = k < kOn ? -PAR.CURSO * Math.min(1, k / (kOn * 0.6)) : -PAR.CURSO * Math.max(0, 1 - (k - kOn) / ((1 - kOn) * 0.5));
+        if (!p.ok && k >= kOn * 0.6) { p.ok = true; marcaPonto(p.u, p.v); }
+      }
+      if (est.tPasso >= dur - 1e-9) {
+        if (p.t === "p" && !p.ok) { p.ok = true; marcaPonto(p.u, p.v); }
+        if (p.t === "p") est.z = 0;
+        if (p.t === "x") est.x = p.x;
+        if (p.t === "y") est.a = p.a;
+        est.tPasso = 0; trab.i++;
+      }
+    }
+    if (trab.i >= trab.passos.length) trab.rodando = false;
+  }
+
+  function aplica() {
+    var dx = est.x - PAR.X_REF;
+    G.carro_sup.position.x = dx; G.carro_inf.position.x = dx;
+    G.embolo.position.set(dx, 0, est.z);
+    G.eixo_vertical.rotation.z = (est.x - PAR.X_MIN) / (PAR.POLIA_DP / 2);
+    G.eixo_papel.rotation.x = (est.a + 70) / (PAR.ROLO_D / 2);
+    papel.position.y = -est.a;
+  }
+
+  function mostraEstado() {
+    var e = document.getElementById("estado");
+    var p = trab.passos[Math.min(trab.i, trab.passos.length - 1)] || {};
+    var fase = trab.i >= trab.passos.length ? "pronto" : (p.rot || (p.t === "p" ? "marcando ponto" : p.t === "x" ? "movendo o carro" : "avançando o papel"));
+    var txt = trab.feito + " de " + trab.total + " pontos · " + trab.linhas.length + " linha(s) · " + fase +
+      "\nNa máquina real: cerca de " + Math.max(1, Math.round(trab.tempoReal)) + " s para este texto.";
+    if (trab.avisos && trab.avisos.length) txt += "\nSem cela braille definida: " + Array.from(new Set(trab.avisos)).join(" ");
+    e.textContent = txt; e.style.whiteSpace = "pre-line";
+  }
+
+  // ------------------------------------------------------------------ folha 2D (lado da leitura)
+  function desenhaFolha() {
+    var cv = document.getElementById("folha"), g = cv.getContext("2d");
+    var s = cv.width / cfg.papelLargura;          // pixels por mm
+    var hmm = cv.height / s;                      // altura visivel em mm
+    g.fillStyle = "#fbfaf5"; g.fillRect(0, 0, cv.width, cv.height);
+    var topo = Math.max(0, Math.min(est.a - hmm * 0.55, cfg.papelAltura - hmm));
+    if (trab.pontos.length && trab.pontos[trab.pontos.length - 1].v < hmm - 10) topo = 0;
+    g.fillStyle = "#c9c4b4";
+    trab.pontos.forEach(function (p) { ponto(g, p.u, p.v - topo, s, 0.55); });
+    g.fillStyle = "#1c1c1c";
+    for (var i = 0; i < covas.count && i < trab.passos.length * 2; i++) { /* preenchido abaixo */ }
+    trab.passos.forEach(function (p) { if (p.t === "p" && p.ok) ponto(g, p.u, p.v - topo, s, 0.75); });
+    // linha de puncao
+    var yl = (est.a - topo) * s;
+    if (trab.rodando && yl > 0 && yl < cv.height) {
+      g.strokeStyle = "#d9620b"; g.lineWidth = 1.5; g.beginPath(); g.moveTo(0, yl); g.lineTo(cv.width, yl); g.stroke();
+      g.fillStyle = "#d9620b"; g.beginPath(); g.arc((est.x - cfg.xPapel0) * s, yl, 4, 0, 6.3); g.fill();
+    }
+  }
+  function ponto(g, u, v, s, r) { g.beginPath(); g.arc(u * s, v * s, r * s, 0, 6.3); g.fill(); }
+
+  // ------------------------------------------------------------------ vistas e controles
+  var VISTAS = {
+    iso: [[PAR.W_IN / 2 + 470, -640, 470], [PAR.W_IN / 2, 20, 105]],
+    frente: [[PAR.W_IN / 2, -980, 150], [PAR.W_IN / 2, 0, 110]],
+    cima: [[PAR.W_IN / 2, -2, 1050], [PAR.W_IN / 2, 30, 100]],
+    tras: [[PAR.W_IN / 2 - 380, 760, 420], [PAR.W_IN / 2, 30, 110]],
+    perto: [[PAR.X_REF + 150, -230, PAR.Z_P + 130], [PAR.X_REF, 0, PAR.Z_P + 25]],
+    lado: [[1150, 10, 120], [PAR.W_IN / 2, 10, 110]]
+  };
+  function vista(n) {
+    var v = VISTAS[n] || VISTAS.iso;
+    cam.position.set(v[0][0], v[0][1], v[0][2]); ctl.target.set(v[1][0], v[1][1], v[1][2]); ctl.update();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-vista]"), function (b) {
+    b.addEventListener("click", function () { vista(b.getAttribute("data-vista")); });
+  });
+
+  function visibilidade() {
+    var mdf = document.getElementById("ckMdf").checked, rx = document.getElementById("ckRaiox").checked;
+    var ferr = document.getElementById("ckFerr").checked;
+    var ocultar = (Q.get("sem") || "").split(",").filter(Boolean);
+    malhas.forEach(function (m) {
+      var p = m.userData, v = true;
+      if (p.t === "mdf") { v = mdf; m.material.transparent = rx; m.material.opacity = rx ? 0.22 : 1; m.material.depthWrite = !rx; m.material.needsUpdate = true; }
+      if (p.t === "ferragem") v = ferr;
+      ocultar.forEach(function (o) { if (p.n.indexOf(o) === 0) v = false; });
+      m.visible = v;
+    });
+  }
+  ["ckMdf", "ckRaiox", "ckFerr"].forEach(function (id) { document.getElementById(id).addEventListener("change", visibilidade); });
+
+  function corte() {
+    var k = +document.getElementById("corte").value / 100;
+    plano.constant = k <= 0 ? 1000 : -(-(PAR.YF + 20) + k * (PAR.YF + PAR.YB + 40));   // y do plano avanca da frente para tras
+  }
+  document.getElementById("corte").addEventListener("input", corte);
+
+  function explode() {
+    var k = +document.getElementById("explodir").value / 100 * 1.1;
+    malhas.forEach(function (m) {
+      var c = m.userData.centro;
+      m.position.set((c.x - CENTRO.x) * k, (c.y - CENTRO.y) * k, (c.z - CENTRO.z) * k * 1.4);
+    });
+  }
+  document.getElementById("explodir").addEventListener("input", explode);
+
+  document.getElementById("texto").addEventListener("input", function () { PRONTAS = null; });
+  document.getElementById("btImprimir").addEventListener("click", function () { prepara(); trab.rodando = true; });
+  document.getElementById("btPausa").addEventListener("click", function () {
+    if (trab.i < trab.passos.length) trab.rodando = !trab.rodando;
+    this.textContent = trab.rodando ? "Pausar" : "Continuar";
+  });
+  document.getElementById("btZerar").addEventListener("click", function () { prepara(); document.getElementById("btPausa").textContent = "Pausar"; });
+
+  function tamanho() {
+    var w = caixa.clientWidth, h = caixa.clientHeight;
+    if (!w || !h) return;
+    rend.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", tamanho);
+
+  // ------------------------------------------------------------------ parametros da URL (capturas de tela)
+  if (Q.get("texto")) document.getElementById("texto").value = Q.get("texto");
+  if (PRONTAS) document.getElementById("texto").value = "(página formatada pelo programa Relevo)";
+  if (Q.get("mdf") === "0") document.getElementById("ckMdf").checked = false;
+  if (Q.get("raiox") === "1") document.getElementById("ckRaiox").checked = true;
+  if (Q.get("ferr") === "0") document.getElementById("ckFerr").checked = false;
+  if (Q.get("corte")) document.getElementById("corte").value = Q.get("corte");
+  if (Q.get("explodir")) document.getElementById("explodir").value = Q.get("explodir");
+  tamanho(); vista(Q.get("vista") || "iso"); visibilidade(); corte(); explode(); prepara();
+  if (Q.get("cam")) {
+    var c6 = Q.get("cam").split(",").map(Number);
+    cam.position.set(c6[0], c6[1], c6[2]); ctl.target.set(c6[3], c6[4], c6[5]); ctl.update();
+  }
+  if (Q.get("prog")) {             // adianta o trabalho ate uma fracao (0..1) sem animar
+    var alvo = Math.floor(trab.passos.length * Math.min(1, +Q.get("prog")));
+    var guarda = 0;
+    while (trab.i < alvo && guarda++ < 200000) avanca(10);
+    if (Q.get("bate") === "1") est.z = -PAR.CURSO;
+  } else if (Q.get("auto") === "1") trab.rodando = true;
+
+  var antes = performance.now(), quadros = 0;
+  function quadro(agora) {
+    var dt = Math.min(0.1, (agora - antes) / 1000); antes = agora;
+    if (trab.rodando) { avanca(dt * (+document.getElementById("vel").value)); mostraEstado(); }
+    aplica(); ctl.update(); rend.render(cena, cam);
+    if (trab.rodando || quadros % 30 === 0) desenhaFolha();
+    if (++quadros === 3) { document.title = "Simulador Braille (pronto)"; mostraEstado(); }
+    requestAnimationFrame(quadro);
+  }
+  requestAnimationFrame(quadro);
+})();
+</script>
+</body>
+</html>
