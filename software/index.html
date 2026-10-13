@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relevo · do arquivo ao braille</title>
+<meta name="description" content="Programa da impressora braille: abre um arquivo, formata em braille segundo as normas brasileiras e imprime pelo USB.">
+<link rel="stylesheet" href="relevo.css">
+</head>
+<body>
+<header class="topo">
+  <a class="marca" href="../index.html" title="Página do projeto">
+    <span class="cela" aria-hidden="true">⠗⠑⠇⠑⠧⠕</span>
+    <span><strong>Relevo</strong><small>do arquivo ao braille</small></span>
+  </a>
+  <nav class="abas" role="tablist" aria-label="Partes do programa">
+    <button role="tab" aria-selected="true" aria-controls="tabDocumento" id="abaDocumento">Documento</button>
+    <button role="tab" aria-selected="false" aria-controls="tabImpressora" id="abaImpressora">Impressora</button>
+    <button role="tab" aria-selected="false" aria-controls="tabAjuda" id="abaAjuda">Como funciona</button>
+  </nav>
+  <div class="conexao">
+    <span id="estado" class="pilula" role="status" aria-live="polite">impressora desconectada</span>
+    <button id="btConectar" class="principal">Conectar</button>
+  </div>
+</header>
+
+<div id="erroGlobal" class="erro-global" hidden></div>
+
+<!-- ================================================================== DOCUMENTO -->
+<main id="tabDocumento" role="tabpanel" aria-labelledby="abaDocumento" class="duas">
+  <section class="coluna">
+    <div id="solta" class="solta" tabindex="0" role="button" aria-label="Abrir arquivo: solte aqui ou pressione Enter para escolher">
+      <div class="solta-icone" aria-hidden="true">⠿</div>
+      <div><strong>Solte um arquivo aqui</strong> ou clique para escolher<br>
+        <small>Word (.docx), PDF, texto (.txt), LibreOffice (.odt), página (.html), Markdown (.md) ou braille pronto (.brf)</small></div>
+      <input type="file" id="arquivo" accept=".docx,.pdf,.txt,.odt,.html,.htm,.md,.markdown,.brf,.brl" hidden>
+    </div>
+    <p id="origem" class="nota" aria-live="polite"></p>
+
+    <div class="cartao">
+      <div class="barra">
+        <span class="rotulo">Texto</span>
+        <div class="ferramentas" role="toolbar" aria-label="Marcar a linha atual">
+          <button data-marca="# " title="A linha vira título centralizado">Título</button>
+          <button data-marca="## " title="A linha vira subtítulo, na margem">Subtítulo</button>
+          <button data-marca="- " title="A linha vira item de lista">Item</button>
+          <button data-marca="> " title="A linha vira verso">Verso</button>
+          <button data-envolve="**" title="Destaque (negrito ou itálico no original)">Destaque</button>
+          <button data-insere="&#10;===&#10;" title="Começa uma página nova">Nova página</button>
+          <button id="btExemplo" title="Carrega um texto de exemplo">Exemplo</button>
+        </div>
+      </div>
+      <textarea id="texto" spellcheck="true" aria-label="Texto do documento, com as marcas de formatação"></textarea>
+    </div>
+
+    <details class="cartao" id="ajustes">
+      <summary>Formatação da página</summary>
+      <div class="campos">
+        <label>Celas por linha <input type="number" id="cCelas" min="10" max="33" value="30"></label>
+        <label>Linhas por folha <input type="number" id="cLinhas" min="4" max="23" value="23"></label>
+        <label>Recuo do parágrafo (celas) <input type="number" id="cRecuo" min="0" max="6" value="2"></label>
+      </div>
+      <div class="opcoes">
+        <label><input type="checkbox" id="cNumerar" checked> numerar as páginas (1ª linha, à direita)</label>
+        <label><input type="checkbox" id="cTinta" checked> mostrar a página do original, quando houver</label>
+        <label><input type="checkbox" id="cCentro" checked> título centralizado</label>
+        <label><input type="checkbox" id="cSublinha"> sublinhar o título com pontos 2-5</label>
+        <label><input type="checkbox" id="cDestaque" checked> manter destaques (sinal 3-5)</label>
+        <label><input type="checkbox" id="cCapitulo"> cada título abre página nova</label>
+      </div>
+    </details>
+  </section>
+
+  <section class="coluna">
+    <div class="cartao resumo">
+      <div id="resumo" role="status" aria-live="polite"></div>
+      <div class="acoes">
+        <button id="btImprimir" class="principal" disabled>Imprimir</button>
+        <select id="quais" aria-label="Quais páginas imprimir"><option value="todas">todas as páginas</option><option value="atual">só a página à vista</option></select>
+        <button id="btCancelar" class="perigo" disabled>Cancelar</button>
+        <span class="espaco"></span>
+        <button id="btBrf" title="Arquivo braille padrão, aceito por impressoras braille comerciais">Salvar .brf</button>
+        <button id="btSim" title="Mostra a máquina em 3D marcando esta página">Ver em 3D</button>
+      </div>
+      <progress id="barra" value="0" max="1" aria-label="Andamento da impressão" hidden></progress>
+      <p id="avisos" class="nota aviso"></p>
+    </div>
+    <div class="vista">
+      <label><input type="checkbox" id="vTinta" checked> mostrar o texto em tinta acima de cada linha</label>
+      <span id="pagAtual" class="nota"></span>
+    </div>
+    <div id="paginas" class="paginas" aria-label="Pré-visualização das páginas em braille, lado da leitura"></div>
+  </section>
+</main>
+
+<!-- ================================================================== IMPRESSORA -->
+<main id="tabImpressora" role="tabpanel" aria-labelledby="abaImpressora" class="duas" hidden>
+  <section class="coluna">
+    <div class="cartao">
+      <h2>Comandos</h2>
+      <div class="linha">
+        <button data-cmd="$H" disabled>Referenciar carro</button>
+        <button data-cmd="$L" disabled>Carregar folha</button>
+        <button data-cmd="$E" disabled>Ejetar folha</button>
+        <button data-cmd="$M 0" disabled>Soltar motores</button>
+      </div>
+      <h2>Testes</h2>
+      <div class="linha">
+        <button data-cmd="$T 1" disabled>Celas cheias</button>
+        <button data-cmd="$T 2" disabled>Alfabeto</button>
+        <button data-cmd="$T 3" disabled>Ida e volta</button>
+        <button data-cmd="$T 4" disabled>Escada de pulso</button>
+        <button data-cmd="$P 1" disabled>Bater 1 vez</button>
+        <button data-cmd="$P 10" disabled>Bater 10 vezes</button>
+        <button data-cmd="$Y 10" disabled>Papel +10 mm</button>
+        <button id="btAutoteste" disabled>Conferir tradutor</button>
+      </div>
+      <h2>Comando livre</h2>
+      <div class="linha">
+        <input type="text" id="livre" placeholder="ex.: $S ton=30" aria-label="Comando livre">
+        <button id="btEnviar" disabled>Enviar</button>
+      </div>
+    </div>
+    <div class="cartao">
+      <h2>Margens e pulso</h2>
+      <div class="campos">
+        <label>Margem esquerda (mm) <input type="number" id="pMe" min="8" max="60" step="0.5" value="20"></label>
+        <label>Margem de cima (mm) <input type="number" id="pMt" min="5" max="60" step="0.5" value="12"></label>
+        <label>Pulso do solenoide (ms) <input type="number" id="pTon" min="5" max="80" value="25"></label>
+      </div>
+      <div class="linha">
+        <button id="btAplicar" disabled>Mandar para a impressora</button>
+        <button data-cmd="$W" disabled>Gravar na impressora</button>
+        <button data-cmd="$I" disabled>Ler parâmetros</button>
+      </div>
+      <p class="nota">Cela no padrão do papel: 2,5 mm entre pontos, 6 mm entre celas, 10 mm entre linhas.</p>
+    </div>
+  </section>
+  <section class="coluna">
+    <div class="cartao">
+      <h2>Registro</h2>
+      <div id="registro" role="log" tabindex="0"></div>
+      <p class="nota" id="semSerial" hidden>Este navegador não conversa com a porta USB. Abra no Microsoft Edge ou no Google Chrome, num computador.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ================================================================== AJUDA -->
+<main id="tabAjuda" role="tabpanel" aria-labelledby="abaAjuda" class="texto" hidden>
+  <article class="cartao">
+    <h2>Em três passos</h2>
+    <ol>
+      <li><strong>Abra o arquivo.</strong> Solte um .docx, .pdf ou .txt na aba Documento. O programa lê o texto e descobre o que é título, parágrafo, lista e destaque.</li>
+      <li><strong>Confira.</strong> À direita aparecem as folhas como vão sair, com o texto em tinta acima de cada linha de braille. Se algo ficou errado (um título que não foi reconhecido, por exemplo), corrija no texto à esquerda.</li>
+      <li><strong>Imprima.</strong> Conecte a impressora pelo USB, clique em Conectar e depois em Imprimir. O programa pede cada folha na hora certa.</li>
+    </ol>
+  </article>
+  <article class="cartao">
+    <h2>O braille não tem tamanho de letra</h2>
+    <p>Em braille toda cela tem o mesmo tamanho: 2,5 mm entre pontos e 6 mm entre celas. Não existe letra grande, negrito, cor nem tipo de fonte. O que no papel comum se mostra com esses recursos, em braille se mostra pela <strong>posição</strong> do texto e por alguns <strong>sinais</strong>. É isso que o programa faz sozinho:</p>
+    <table>
+      <thead><tr><th>No original</th><th>Em braille</th><th>De onde vem a regra</th></tr></thead>
+      <tbody>
+        <tr><td>Título, letra grande</td><td>centralizado, com uma linha em branco antes e outra depois; nunca sozinho no fim da folha</td><td>Normas Técnicas, 5.25</td></tr>
+        <tr><td>Subtítulo</td><td>começa na margem; se passar da linha, continua na 3ª cela</td><td>Normas Técnicas, 5.25.2</td></tr>
+        <tr><td>Parágrafo</td><td>começa na 3ª cela; as outras linhas, na 1ª. Não se pula linha entre parágrafos</td><td>Normas Técnicas, 5.19</td></tr>
+        <tr><td>Lista, itens</td><td>começa na 1ª cela; continua na 3ª</td><td>Normas Técnicas, 5.20</td></tr>
+        <tr><td>Verso de poesia</td><td>começa na margem; continua na 3ª cela</td><td>Normas Técnicas, 5.26</td></tr>
+        <tr><td>Negrito, itálico, sublinhado</td><td>um sinal só para os três: pontos 3-5 antes e depois do trecho</td><td>Grafia Braille, 30</td></tr>
+        <tr><td>Maiúscula</td><td>pontos 4-6 antes da letra; duas vezes para a palavra inteira</td><td>Grafia Braille</td></tr>
+        <tr><td>Número</td><td>pontos 3-4-5-6 e depois as letras de a até j</td><td>Grafia Braille</td></tr>
+        <tr><td>Número da página</td><td>na 1ª linha: à direita o da folha braille; a partir da 3ª cela o da página do original</td><td>Normas Técnicas, 5.17</td></tr>
+      </tbody>
+    </table>
+    <p>As Normas pedem para não exagerar nos destaques: sinal demais atrapalha a leitura com o dedo. Por isso os títulos não levam sinal de destaque (as linhas em branco já destacam) e há uma opção para desligar todos.</p>
+    <p>Uma folha comercial de braille tem até 40 celas por linha e 27 linhas. Esta impressora faz 30 celas e 23 linhas em A4, porque o carro tem 196 mm de curso e os últimos 48 mm da folha ficam atrás dos roletes.</p>
+  </article>
+  <article class="cartao">
+    <h2>Marcas do texto</h2>
+    <p>Quando você abre um arquivo, o programa escreve essas marcas sozinho. Você pode mexer nelas ou digitar direto.</p>
+    <table>
+      <thead><tr><th>Você escreve</th><th>Sai em braille</th></tr></thead>
+      <tbody>
+        <tr><td><code># Capítulo 1</code></td><td>título centralizado</td></tr>
+        <tr><td><code>## Introdução</code></td><td>subtítulo na margem</td></tr>
+        <tr><td><code>- arroz</code> ou <code>1. arroz</code></td><td>item de lista</td></tr>
+        <tr><td><code>&gt; Minha terra tem palmeiras</code></td><td>verso</td></tr>
+        <tr><td><code>**importante**</code></td><td>destaque</td></tr>
+        <tr><td>uma linha em branco</td><td>novo parágrafo</td></tr>
+        <tr><td>duas linhas em branco</td><td>uma linha em branco na folha</td></tr>
+        <tr><td><code>---</code></td><td>separador (fileira de pontos 2-5 no centro)</td></tr>
+        <tr><td><code>===</code></td><td>nova página</td></tr>
+        <tr><td><code>[[página 12]]</code></td><td>daqui em diante o original está na página 12</td></tr>
+      </tbody>
+    </table>
+  </article>
+  <article class="cartao">
+    <h2>Fontes</h2>
+    <p>Normas Técnicas para a Produção de Textos em Braille (Ministério da Educação). Grafia Braille para a Língua Portuguesa (Ministério da Educação, 3ª edição, 2018). A tabela de sinais foi conferida com a tabela pt-pt-g1 do liblouis.</p>
+  </article>
+</main>
+
+<dialog id="dialogo">
+  <h2 id="dlgTitulo">Trocar a folha</h2>
+  <p id="dlgTexto"></p>
+  <div class="linha fim"><button id="dlgNao">Parar</button><button id="dlgSim" class="principal">Continuar</button></div>
+</dialog>
+
+<script src="lib/pdf.min.js"></script>
+<script>window.pdfjsLib || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"><\/script>');</script>
+<script src="braille-pt.js"></script>
+<script src="leiaute.js"></script>
+<script src="formatador.js"></script>
+<script src="importar.js"></script>
+<script src="relevo.js"></script>
+</body>
+</html>
