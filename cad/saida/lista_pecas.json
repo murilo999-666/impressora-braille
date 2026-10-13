@@ -1,0 +1,664 @@
+{
+ "comprados": [
+  {
+   "peca": "Bucha linear LM8UU",
+   "qtd": 6
+  },
+  {
+   "peca": "Solenoide JF-0826B 24 V",
+   "qtd": 1
+  },
+  {
+   "peca": "Estilete: parafuso M3 sem cabeca, ponta arredondada",
+   "qtd": 1
+  },
+  {
+   "peca": "Espacador sextavado M3 femea-femea 15 mm",
+   "qtd": 1
+  },
+  {
+   "peca": "Matriz: parafuso allen sem cabeca M3 x 16",
+   "qtd": 1
+  },
+  {
+   "peca": "Eixo retificado 8 mm x 330",
+   "qtd": 4
+  },
+  {
+   "peca": "Eixo retificado 8 mm x 103",
+   "qtd": 1
+  },
+  {
+   "peca": "Polia GT2 20 dentes furo 8",
+   "qtd": 3
+  },
+  {
+   "peca": "Rolamento 608",
+   "qtd": 6
+  },
+  {
+   "peca": "Acoplamento flexivel 5 x 8",
+   "qtd": 1
+  },
+  {
+   "peca": "Motor NEMA 17 17HS4401",
+   "qtd": 2
+  },
+  {
+   "peca": "Polia lisa GT2 furo 5 (tensora)",
+   "qtd": 2
+  },
+  {
+   "peca": "Correia GT2 6 mm aberta (650 mm)",
+   "qtd": 2
+  },
+  {
+   "peca": "Eixo retificado 8 mm x 366",
+   "qtd": 1
+  },
+  {
+   "peca": "O-ring 20 x 3 mm",
+   "qtd": 2
+  },
+  {
+   "peca": "Mola de compressao (de caneta) 4,5 x 20 mm",
+   "qtd": 2
+  },
+  {
+   "peca": "Polia GT2 20 dentes furo 5",
+   "qtd": 1
+  },
+  {
+   "peca": "Correia GT2 fechada 200 mm",
+   "qtd": 1
+  },
+  {
+   "peca": "Microchave KW11-3Z (fim de curso)",
+   "qtd": 2
+  },
+  {
+   "peca": "Arduino Mega 2560",
+   "qtd": 1
+  },
+  {
+   "peca": "RAMPS 1.4",
+   "qtd": 1
+  },
+  {
+   "peca": "Driver DRV8825",
+   "qtd": 2
+  },
+  {
+   "peca": "Modulo step-up XL6009",
+   "qtd": 1
+  },
+  {
+   "peca": "Placa do solenoide (perfurada 4 x 2,5 cm)",
+   "qtd": 1
+  },
+  {
+   "peca": "Jack P4 femea de painel 5,5 x 2,1 mm",
+   "qtd": 1
+  },
+  {
+   "peca": "Chave alavanca 2 posicoes (liga/desliga)",
+   "qtd": 1
+  },
+  {
+   "peca": "Porta-fusivel de painel 5 x 20 mm + fusivel 3 A",
+   "qtd": 1
+  },
+  {
+   "peca": "Papel braille 120-180 g/m2",
+   "qtd": 1
+  }
+ ],
+ "ferragens": [
+  {
+   "peca": "Arruela lisa M3",
+   "qtd": 12
+  },
+  {
+   "peca": "Parafuso M2 x 12 (philips)",
+   "qtd": 4
+  },
+  {
+   "peca": "Parafuso M3 x 10 (allen)",
+   "qtd": 2
+  },
+  {
+   "peca": "Parafuso M3 x 12 (allen)",
+   "qtd": 9
+  },
+  {
+   "peca": "Parafuso M3 x 16 (allen)",
+   "qtd": 43
+  },
+  {
+   "peca": "Parafuso M3 x 20 (allen)",
+   "qtd": 6
+  },
+  {
+   "peca": "Parafuso M3 x 25 (allen)",
+   "qtd": 4
+  },
+  {
+   "peca": "Parafuso M3 x 35 (allen)",
+   "qtd": 2
+  },
+  {
+   "peca": "Parafuso M3 x 6 (sem cabeca)",
+   "qtd": 1
+  },
+  {
+   "peca": "Parafuso M3 x 8 (allen)",
+   "qtd": 12
+  },
+  {
+   "peca": "Parafuso M3 x 8 (philips)",
+   "qtd": 4
+  },
+  {
+   "peca": "Parafuso M3 x 8 (sem cabeca)",
+   "qtd": 2
+  },
+  {
+   "peca": "Parafuso M5 x 25 (allen)",
+   "qtd": 2
+  },
+  {
+   "peca": "Porca M3 (borboleta)",
+   "qtd": 4
+  },
+  {
+   "peca": "Porca M3 (sextavada)",
+   "qtd": 62
+  },
+  {
+   "peca": "Porca M3 (travante)",
+   "qtd": 4
+  },
+  {
+   "peca": "Porca M5 (travante)",
+   "qtd": 2
+  }
+ ],
+ "resumo": {
+  "largura_interna": 318.0,
+  "largura_externa": 330.0,
+  "profundidade_externa": 178.0,
+  "altura_externa": 236.0,
+  "curso_x": 196.0,
+  "x_papel_esq": 54.0,
+  "margem_esq_min": 8.0,
+  "margem_dir_min": 6.0,
+  "celas_max": 33,
+  "passos_mm_x": 80.0,
+  "passos_mm_y": 38.43742021842001,
+  "dist_rolo_puncao": 48.0,
+  "correia_x_comprimento": 586.0,
+  "z_motor_x_base": 6.0,
+  "eixo_vertical": [
+   72.0,
+   175.0
+  ]
+ },
+ "usos_parafusos": {
+  "Parafuso M3 x 8": {
+   "trava das buchas": 4,
+   "motor X na torre": 4,
+   "trava do rolete": 2,
+   "motor Y": 4,
+   "Mega na bandeja": 4
+  },
+  "Parafuso M3 x 16": {
+   "batente do embolo (regula o curso)": 1,
+   "torre do motor X": 4,
+   "mancal superior": 2,
+   "trava dos eixos": 4,
+   "base do pressor": 4,
+   "guia do papel": 4,
+   "suporte do fim de curso": 2,
+   "suporte do sensor de papel": 2,
+   "placa de conectores": 4,
+   "junta em T lateral-base": 4,
+   "junta em T lateral-frente/tras": 8,
+   "junta em T frente/tras-base": 4
+  },
+  "Parafuso M3 x 12": {
+   "aperta o solenoide": 2,
+   "suporte do motor Y na base": 3,
+   "bandeja do Mega na base": 4
+  },
+  "Parafuso M5 x 25": {
+   "eixo da polia tensora": 2
+  },
+  "Parafuso M3 x 25": {
+   "esticador da correia": 4
+  },
+  "Parafuso M3 x 20": {
+   "mancal do eixo do papel": 4,
+   "eixo do 608 do pressor": 2
+  },
+  "Parafuso M3 x 35": {
+   "pino do braco do pressor": 2
+  },
+  "Parafuso M3 x 6": {
+   "trava do manipulo": 1
+  },
+  "Parafuso M3 x 10": {
+   "suporte de modulo na base": 2
+  }
+ },
+ "impressas": [
+  {
+   "peca": "carro_puncao",
+   "qtd": 1,
+   "x": 90.2,
+   "y": 71.0,
+   "z": 56.0,
+   "volume_cm3": 78.05,
+   "massa_g": 53.2,
+   "apoio_mm2": 1638,
+   "ponte_mm2": 119,
+   "maior_ponte_mm2": 72,
+   "triangulos": 3740,
+   "solido_ok": true
+  },
+  {
+   "peca": "carro_matriz",
+   "qtd": 1,
+   "x": 28.5,
+   "y": 61.0,
+   "z": 56.0,
+   "volume_cm3": 39.65,
+   "massa_g": 27.0,
+   "apoio_mm2": 853,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 2608,
+   "solido_ok": true
+  },
+  {
+   "peca": "espacador_bucha_curto",
+   "qtd": 2,
+   "x": 14.6,
+   "y": 14.6,
+   "z": 6.8,
+   "volume_cm3": 0.6,
+   "massa_g": 0.4,
+   "apoio_mm2": 89,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 504,
+   "solido_ok": true
+  },
+  {
+   "peca": "espacador_bucha_longo",
+   "qtd": 4,
+   "x": 14.6,
+   "y": 14.6,
+   "z": 15.4,
+   "volume_cm3": 1.37,
+   "massa_g": 0.9,
+   "apoio_mm2": 89,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 504,
+   "solido_ok": true
+  },
+  {
+   "peca": "calco_solenoide",
+   "qtd": 1,
+   "x": 22.0,
+   "y": 25.0,
+   "z": 4.0,
+   "volume_cm3": 1.63,
+   "massa_g": 1.1,
+   "apoio_mm2": 406,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 28,
+   "solido_ok": true
+  },
+  {
+   "peca": "torre_motor_x",
+   "qtd": 1,
+   "x": 47.0,
+   "y": 44.0,
+   "z": 45.0,
+   "volume_cm3": 36.47,
+   "massa_g": 24.9,
+   "apoio_mm2": 2032,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 3384,
+   "solido_ok": true
+  },
+  {
+   "peca": "mancal_superior",
+   "qtd": 1,
+   "x": 27.5,
+   "y": 40.0,
+   "z": 36.5,
+   "volume_cm3": 13.99,
+   "massa_g": 9.5,
+   "apoio_mm2": 1082,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 1060,
+   "solido_ok": true
+  },
+  {
+   "peca": "esticador",
+   "qtd": 2,
+   "x": 25.5,
+   "y": 17.5,
+   "z": 29.0,
+   "volume_cm3": 7.49,
+   "massa_g": 5.1,
+   "apoio_mm2": 280,
+   "ponte_mm2": 65,
+   "maior_ponte_mm2": 32,
+   "triangulos": 1596,
+   "solido_ok": true
+  },
+  {
+   "peca": "trava_eixos",
+   "qtd": 4,
+   "x": 14.0,
+   "y": 62.0,
+   "z": 4.0,
+   "volume_cm3": 3.13,
+   "massa_g": 2.1,
+   "apoio_mm2": 842,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 1324,
+   "solido_ok": true
+  },
+  {
+   "peca": "mancal_eixo_papel",
+   "qtd": 2,
+   "x": 50.0,
+   "y": 30.0,
+   "z": 9.5,
+   "volume_cm3": 6.01,
+   "massa_g": 4.1,
+   "apoio_mm2": 865,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 1496,
+   "solido_ok": true
+  },
+  {
+   "peca": "anel_encosto",
+   "qtd": 1,
+   "x": 14.0,
+   "y": 14.0,
+   "z": 5.4,
+   "volume_cm3": 0.54,
+   "massa_g": 0.4,
+   "apoio_mm2": 100,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 504,
+   "solido_ok": true
+  },
+  {
+   "peca": "rolete",
+   "qtd": 2,
+   "x": 24.0,
+   "y": 24.0,
+   "z": 18.0,
+   "volume_cm3": 6.47,
+   "massa_g": 4.4,
+   "apoio_mm2": 400,
+   "ponte_mm2": 24,
+   "maior_ponte_mm2": 12,
+   "triangulos": 1576,
+   "solido_ok": true
+  },
+  {
+   "peca": "pressor_base",
+   "qtd": 2,
+   "x": 26.4,
+   "y": 32.0,
+   "z": 38.0,
+   "volume_cm3": 8.2,
+   "massa_g": 5.6,
+   "apoio_mm2": 827,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 1328,
+   "solido_ok": true
+  },
+  {
+   "peca": "pressor_braco",
+   "qtd": 2,
+   "x": 17.2,
+   "y": 35.5,
+   "z": 20.8,
+   "volume_cm3": 6.41,
+   "massa_g": 4.4,
+   "apoio_mm2": 562,
+   "ponte_mm2": 23,
+   "maior_ponte_mm2": 23,
+   "triangulos": 1080,
+   "solido_ok": true
+  },
+  {
+   "peca": "bucha_608",
+   "qtd": 2,
+   "x": 7.9,
+   "y": 7.9,
+   "z": 7.6,
+   "volume_cm3": 0.31,
+   "massa_g": 0.2,
+   "apoio_mm2": 40,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 504,
+   "solido_ok": true
+  },
+  {
+   "peca": "manipulo",
+   "qtd": 1,
+   "x": 39.2,
+   "y": 39.2,
+   "z": 13.5,
+   "volume_cm3": 9.56,
+   "massa_g": 6.5,
+   "apoio_mm2": 1066,
+   "ponte_mm2": 14,
+   "maior_ponte_mm2": 7,
+   "triangulos": 1800,
+   "solido_ok": true
+  },
+  {
+   "peca": "suporte_motor_y",
+   "qtd": 1,
+   "x": 61.7,
+   "y": 52.0,
+   "z": 38.0,
+   "volume_cm3": 23.67,
+   "massa_g": 16.1,
+   "apoio_mm2": 2462,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 2136,
+   "solido_ok": true
+  },
+  {
+   "peca": "guia_papel_esq",
+   "qtd": 1,
+   "x": 16.0,
+   "y": 90.0,
+   "z": 14.0,
+   "volume_cm3": 7.24,
+   "massa_g": 4.9,
+   "apoio_mm2": 1422,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 532,
+   "solido_ok": true
+  },
+  {
+   "peca": "guia_papel_dir",
+   "qtd": 1,
+   "x": 16.0,
+   "y": 90.0,
+   "z": 14.0,
+   "volume_cm3": 7.24,
+   "massa_g": 4.9,
+   "apoio_mm2": 1422,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 532,
+   "solido_ok": true
+  },
+  {
+   "peca": "suporte_fim_de_curso",
+   "qtd": 1,
+   "x": 26.0,
+   "y": 17.3,
+   "z": 33.0,
+   "volume_cm3": 6.47,
+   "massa_g": 4.4,
+   "apoio_mm2": 432,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 1052,
+   "solido_ok": true
+  },
+  {
+   "peca": "suporte_sensor_papel",
+   "qtd": 1,
+   "x": 28.0,
+   "y": 40.0,
+   "z": 28.0,
+   "volume_cm3": 7.26,
+   "massa_g": 5.0,
+   "apoio_mm2": 934,
+   "ponte_mm2": 70,
+   "maior_ponte_mm2": 35,
+   "triangulos": 1084,
+   "solido_ok": true
+  },
+  {
+   "peca": "bandeja_mega",
+   "qtd": 1,
+   "x": 61.3,
+   "y": 103.6,
+   "z": 8.5,
+   "volume_cm3": 12.35,
+   "massa_g": 8.4,
+   "apoio_mm2": 4635,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 3584,
+   "solido_ok": true
+  },
+  {
+   "peca": "suporte_modulo",
+   "qtd": 2,
+   "x": 52.0,
+   "y": 30.0,
+   "z": 4.0,
+   "volume_cm3": 5.82,
+   "massa_g": 4.0,
+   "apoio_mm2": 1466,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 628,
+   "solido_ok": true
+  },
+  {
+   "peca": "placa_conectores",
+   "qtd": 1,
+   "x": 64.0,
+   "y": 40.0,
+   "z": 3.0,
+   "volume_cm3": 6.92,
+   "massa_g": 4.7,
+   "apoio_mm2": 2307,
+   "ponte_mm2": 0,
+   "maior_ponte_mm2": 0,
+   "triangulos": 2060,
+   "solido_ok": true
+  }
+ ],
+ "chapas": [
+  {
+   "peca": "lateral_esquerda",
+   "largura": 178.0,
+   "altura": 236.0,
+   "contornos": 39,
+   "furos_redondos": 25,
+   "area_cm2": 395.1,
+   "massa_g": 178
+  },
+  {
+   "peca": "lateral_direita",
+   "largura": 178.0,
+   "altura": 236.0,
+   "contornos": 31,
+   "furos_redondos": 17,
+   "area_cm2": 395.8,
+   "massa_g": 178
+  },
+  {
+   "peca": "parede_frontal",
+   "largura": 330.0,
+   "altura": 236.0,
+   "contornos": 8,
+   "furos_redondos": 2,
+   "area_cm2": 571.6,
+   "massa_g": 257
+  },
+  {
+   "peca": "parede_traseira",
+   "largura": 330.0,
+   "altura": 236.0,
+   "contornos": 27,
+   "furos_redondos": 12,
+   "area_cm2": 698.7,
+   "massa_g": 314
+  },
+  {
+   "peca": "base",
+   "largura": 330.0,
+   "altura": 162.0,
+   "contornos": 22,
+   "furos_redondos": 9,
+   "area_cm2": 493.3,
+   "massa_g": 222
+  },
+  {
+   "peca": "mesa_traseira",
+   "largura": 330.0,
+   "altura": 193.0,
+   "contornos": 9,
+   "furos_redondos": 1,
+   "area_cm2": 512.5,
+   "massa_g": 231
+  },
+  {
+   "peca": "mesa_frontal",
+   "largura": 330.0,
+   "altura": 99.0,
+   "contornos": 2,
+   "furos_redondos": 1,
+   "area_cm2": 293.8,
+   "massa_g": 132
+  }
+ ],
+ "pranchas": {
+  "600x400": 3,
+  "900x600": 2
+ },
+ "visualizador": {
+  "pecas": 275,
+  "triangulos": 336682
+ }
+}

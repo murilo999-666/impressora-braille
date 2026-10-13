@@ -1,0 +1,3 @@
+mesa 1: 22 pecas, altura maxima 56 mm, cerca de 157 g  -> anel_encosto, bucha_608, calco_solenoide, carro_matriz, carro_puncao, espacador_bucha_curto, espacador_bucha_longo, esticador, mancal_eixo_papel, mancal_superior, pressor_braco, rolete, torre_motor_x
+mesa 2: 16 pecas, altura maxima 38 mm, cerca de 82 g  -> bandeja_mega, guia_papel_dir, guia_papel_esq, manipulo, placa_conectores, pressor_base, suporte_fim_de_curso, suporte_modulo, suporte_motor_y, suporte_sensor_papel, trava_eixos
+total: 38 pecas em 2 mesas

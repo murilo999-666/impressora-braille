@@ -1,0 +1,82 @@
+impressas: 24 tipos, 38 pecas, 239 g de filamento
+  carro_puncao               x1   90.2 x  71.0 x  56.0   53.2 g  apoio  1638  ponte   119 (maior   72)  ok
+  carro_matriz               x1   28.5 x  61.0 x  56.0   27.0 g  apoio   853  ponte     0 (maior    0)  ok
+  espacador_bucha_curto      x2   14.6 x  14.6 x   6.8    0.4 g  apoio    89  ponte     0 (maior    0)  ok
+  espacador_bucha_longo      x4   14.6 x  14.6 x  15.4    0.9 g  apoio    89  ponte     0 (maior    0)  ok
+  calco_solenoide            x1   22.0 x  25.0 x   4.0    1.1 g  apoio   406  ponte     0 (maior    0)  ok
+  torre_motor_x              x1   47.0 x  44.0 x  45.0   24.9 g  apoio  2032  ponte     0 (maior    0)  ok
+  mancal_superior            x1   27.5 x  40.0 x  36.5    9.5 g  apoio  1082  ponte     0 (maior    0)  ok
+  esticador                  x2   25.5 x  17.5 x  29.0    5.1 g  apoio   280  ponte    65 (maior   32)  ok
+  trava_eixos                x4   14.0 x  62.0 x   4.0    2.1 g  apoio   842  ponte     0 (maior    0)  ok
+  mancal_eixo_papel          x2   50.0 x  30.0 x   9.5    4.1 g  apoio   865  ponte     0 (maior    0)  ok
+  anel_encosto               x1   14.0 x  14.0 x   5.4    0.4 g  apoio   100  ponte     0 (maior    0)  ok
+  rolete                     x2   24.0 x  24.0 x  18.0    4.4 g  apoio   400  ponte    24 (maior   12)  ok
+  pressor_base               x2   26.4 x  32.0 x  38.0    5.6 g  apoio   827  ponte     0 (maior    0)  ok
+  pressor_braco              x2   17.2 x  35.5 x  20.8    4.4 g  apoio   562  ponte    23 (maior   23)  ok
+  bucha_608                  x2    7.9 x   7.9 x   7.6    0.2 g  apoio    40  ponte     0 (maior    0)  ok
+  manipulo                   x1   39.2 x  39.2 x  13.5    6.5 g  apoio  1066  ponte    14 (maior    7)  ok
+  suporte_motor_y            x1   61.7 x  52.0 x  38.0   16.1 g  apoio  2462  ponte     0 (maior    0)  ok
+  guia_papel_esq             x1   16.0 x  90.0 x  14.0    4.9 g  apoio  1422  ponte     0 (maior    0)  ok
+  guia_papel_dir             x1   16.0 x  90.0 x  14.0    4.9 g  apoio  1422  ponte     0 (maior    0)  ok
+  suporte_fim_de_curso       x1   26.0 x  17.3 x  33.0    4.4 g  apoio   432  ponte     0 (maior    0)  ok
+  suporte_sensor_papel       x1   28.0 x  40.0 x  28.0    5.0 g  apoio   934  ponte    70 (maior   35)  ok
+  bandeja_mega               x1   61.3 x 103.6 x   8.5    8.4 g  apoio  4635  ponte     0 (maior    0)  ok
+  suporte_modulo             x2   52.0 x  30.0 x   4.0    4.0 g  apoio  1466  ponte     0 (maior    0)  ok
+  placa_conectores           x1   64.0 x  40.0 x   3.0    4.7 g  apoio  2307  ponte     0 (maior    0)  ok
+chapas de MDF:
+  lateral_esquerda    178.0 x  236.0   39 contornos    395 cm2
+  lateral_direita     178.0 x  236.0   31 contornos    396 cm2
+  parede_frontal      330.0 x  236.0    8 contornos    572 cm2
+  parede_traseira     330.0 x  236.0   27 contornos    699 cm2
+  base                330.0 x  162.0   22 contornos    493 cm2
+  mesa_traseira       330.0 x  193.0    9 contornos    512 cm2
+  mesa_frontal        330.0 x   99.0    2 contornos    294 cm2
+pranchas: {'600x400': 3, '900x600': 2}
+visualizador: {'pecas': 275, 'triangulos': 336682}
+pecas compradas / do estoque:
+    6  Bucha linear LM8UU
+    1  Solenoide JF-0826B 24 V
+    1  Estilete: parafuso M3 sem cabeca, ponta arredondada
+    1  Espacador sextavado M3 femea-femea 15 mm
+    1  Matriz: parafuso allen sem cabeca M3 x 16
+    4  Eixo retificado 8 mm x 330
+    1  Eixo retificado 8 mm x 103
+    3  Polia GT2 20 dentes furo 8
+    6  Rolamento 608
+    1  Acoplamento flexivel 5 x 8
+    2  Motor NEMA 17 17HS4401
+    2  Polia lisa GT2 furo 5 (tensora)
+    2  Correia GT2 6 mm aberta (650 mm)
+    1  Eixo retificado 8 mm x 366
+    2  O-ring 20 x 3 mm
+    2  Mola de compressao (de caneta) 4,5 x 20 mm
+    1  Polia GT2 20 dentes furo 5
+    1  Correia GT2 fechada 200 mm
+    2  Microchave KW11-3Z (fim de curso)
+    1  Arduino Mega 2560
+    1  RAMPS 1.4
+    2  Driver DRV8825
+    1  Modulo step-up XL6009
+    1  Placa do solenoide (perfurada 4 x 2,5 cm)
+    1  Jack P4 femea de painel 5,5 x 2,1 mm
+    1  Chave alavanca 2 posicoes (liga/desliga)
+    1  Porta-fusivel de painel 5 x 20 mm + fusivel 3 A
+    1  Papel braille 120-180 g/m2
+ferragens:
+   12  Arruela lisa M3
+    4  Parafuso M2 x 12 (philips)
+    2  Parafuso M3 x 10 (allen)
+    9  Parafuso M3 x 12 (allen)
+   43  Parafuso M3 x 16 (allen)
+    6  Parafuso M3 x 20 (allen)
+    4  Parafuso M3 x 25 (allen)
+    2  Parafuso M3 x 35 (allen)
+    1  Parafuso M3 x 6 (sem cabeca)
+   12  Parafuso M3 x 8 (allen)
+    4  Parafuso M3 x 8 (philips)
+    2  Parafuso M3 x 8 (sem cabeca)
+    2  Parafuso M5 x 25 (allen)
+    4  Porca M3 (borboleta)
+   62  Porca M3 (sextavada)
+    4  Porca M3 (travante)
+    2  Porca M5 (travante)

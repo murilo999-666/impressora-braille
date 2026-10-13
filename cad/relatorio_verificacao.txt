@@ -1,0 +1,20 @@
+carros em x = 150: 276 pecas, 461 pares testados, 0 problemas
+embolo embaixo (batida): 276 pecas, 460 pares testados, 0 problemas
+
+largura_interna            318.0
+largura_externa            330.0
+profundidade_externa       178.0
+altura_externa             236.0
+curso_x                    196.0
+x_papel_esq                54.0
+margem_esq_min             8.0
+margem_dir_min             6.0
+celas_max                  33
+passos_mm_x                80.0
+passos_mm_y                38.43742021842001
+dist_rolo_puncao           48.0
+correia_x_comprimento      586.0
+z_motor_x_base             6.0
+eixo_vertical              (72.0, 175.0)
+
+TOTAL DE PROBLEMAS: 0
