@@ -1,5 +1,8 @@
+carros em x = 62: 276 pecas, 464 pares testados, 0 problemas
 carros em x = 150: 276 pecas, 461 pares testados, 0 problemas
+carros em x = 258: 276 pecas, 459 pares testados, 0 problemas
 embolo embaixo (batida): 276 pecas, 460 pares testados, 0 problemas
+varredura do curso (de 62 a 258 mm, passo 7): 873 pares testados, 0 problemas
 
 largura_interna            318.0
 largura_externa            330.0
