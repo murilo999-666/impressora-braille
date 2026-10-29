@@ -29,7 +29,7 @@ três orçamentos. O total entra no relatório da feira como custo do protótipo
 | Correia GT2 aberta | ? | servem se houver dois pedaços de 650 mm |
 | Roletes impressos com anel de vedação | 2 | **não entram**: são pequenos para este projeto |
 
-Tudo o que vocês listaram é aproveitado, menos os dois roletes antigos.
+Tudo o que vocês listaram é aproveitado, menos os dois roletes impressos.
 
 ## 2. Obrigatório comprar
 
