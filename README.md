@@ -105,17 +105,17 @@ meça antes de fabricar, pela tabela de [`docs/03-projeto-mecanico.md`](docs/03-
 
 ## De onde veio
 
-O projeto reaproveita as peças de um protótipo antigo da equipe, montado a partir da BrailleRAP, que não marcava o
-papel. A causa encontrada: o solenoide do protótipo é de 24 V e estava ligado em 12 V, com 2,1 W dos 24 W que o
-projeto original usa. Este projeto dá ao solenoide alimentação própria de 24 a 32 V e redesenha o resto:
+O projeto parte da BrailleRAP, impressora braille de hardware aberto: tiramos os arquivos dos repositórios públicos
+dela e melhoramos o projeto. A eletrônica, os motores e os eixos foram comprados a preço de sucata na Lixotec, em Foz do Iguaçu.
+O nosso solenoide é a versão de 24 V do JF-0826B, enquanto a BrailleRAP usa a de 12 V: ligado em 12 V, ele receberia
+2,1 W dos 24 W que o projeto original usa. Por isso este projeto dá ao solenoide alimentação própria de 24 a 32 V e
+redesenha o resto:
 
-| No protótipo antigo | Neste projeto |
-|---|---|
-| Punção de baixo para cima, solenoide escondido | Punção de cima para baixo; a folha fica apoiada na mesa na hora da batida |
-| Eixos presos em peças impressas separadas | Os quatro eixos passam pelos mesmos furos das laterais: o alinhamento sai do corte a laser |
-| Pontos passando embaixo dos roletes de pressão | Roletes antes da linha de punção; mesa da frente 1 mm mais baixa |
-| Caixa colada | Caixa parafusada com porca presa |
-| Marlin e programa instalado | Firmware próprio e programa no navegador |
+- punção de cima para baixo, com a folha apoiada na mesa na hora da batida;
+- os quatro eixos passam pelos mesmos furos das laterais, então o alinhamento sai do corte a laser;
+- roletes antes da linha de punção e mesa da frente 1 mm mais baixa;
+- caixa parafusada com porca presa;
+- firmware próprio e programa no navegador.
 
 ## Crédito
 

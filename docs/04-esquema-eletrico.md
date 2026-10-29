@@ -22,17 +22,17 @@ Fonte: **12 V, 5 A (60 W)**, com plugue P4 de 5,5 × 2,1 mm. Uma de 3 A funciona
 ## 2. Por que o solenoide precisa de 24 V
 
 O solenoide de vocês é o JF-0826B na versão **24 V, 350 mA** (está na etiqueta). A resistência da bobina é
-24 ÷ 0,35 = 68,6 Ω. A BrailleRAP, de onde saiu o projeto antigo, pede a versão de **12 V, 2 A** do mesmo solenoide.
+24 ÷ 0,35 = 68,6 Ω. A BrailleRAP, de onde saiu este projeto, pede a versão de **12 V, 2 A** do mesmo solenoide.
 
 | Tensão na bobina de vocês | Corrente | Potência | Comparado com a BrailleRAP (24 W) |
 |---|---|---|---|
-| 12 V (como estava ligado) | 0,17 A | 2,1 W | 9 % |
+| 12 V (tensão da BrailleRAP) | 0,17 A | 2,1 W | 9 % |
 | 24 V (nominal) | 0,35 A | 8,4 W | 35 % |
 | 30 V | 0,44 A | 13,1 W | 55 % |
 | 32 V (máximo que recomendo) | 0,47 A | 14,9 W | 62 % |
 
 A força de um solenoide cresce com o quadrado da corrente, ou seja, na mesma proporção da potência. Ligado em 12 V,
-o de vocês tinha um décimo da força prevista. Esta é a causa mais provável de o projeto antigo não marcar o papel.
+o de vocês teria um décimo da força prevista, e o ponto provavelmente não marcaria o papel.
 
 Como o pulso é curto (25 ms) e o firmware nunca deixa o solenoide ligado mais de 40 % do tempo, dá para passar um
 pouco da tensão nominal sem esquentar: a 30 V e 8 pontos por segundo, a potência média fica em 13,1 W × 0,2 = 2,6 W,

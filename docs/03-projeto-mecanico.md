@@ -112,7 +112,7 @@ Três peças eu só conheci por foto ou por catálogo. Meça com paquímetro e, 
 | Microchave: 20 × 6,4 × 10 mm, furos a 9,5 mm | KW11-3Z | `MS_*` | muda os dois suportes |
 | Espessura real do MDF | 6,0 mm | `T` | muda todos os encaixes |
 
-Os dois roletes antigos com anel de vedação não entram neste projeto: são menores (perto de 22 mm) e deixariam o
+Os dois roletes com anel de vedação que vieram com as peças não entram neste projeto: são menores (perto de 22 mm) e deixariam o
 eixo a menos de 0,5 mm da mesa. Os novos têm 26,5 mm.
 
 ## 5. Corte a laser

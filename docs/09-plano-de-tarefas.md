@@ -6,8 +6,8 @@ Legenda: **[x]** feito e conferido no computador (a coluna da direita diz como).
 
 | | Tarefa | Como foi conferido |
 |---|---|---|
-| [x] | Identificar o projeto antigo | fotos comparadas com a lista de materiais da BrailleRAP: mesmos eixos (4 × 330, 1 × 365, 1 × 100), mesmas polias, mesmo arranjo |
-| [x] | Achar por que não marcava | etiqueta do solenoide (24 V, 350 mA) contra o especificado (12 V, 2 A): 2,1 W contra 24 W |
+| [x] | Estudar o projeto BrailleRAP | lista de materiais da BrailleRAP conferida com as peças compradas: mesmos eixos (4 × 330, 1 × 365, 1 × 100), mesmas polias |
+| [x] | Conferir o solenoide | etiqueta do solenoide (24 V, 350 mA) contra o especificado pela BrailleRAP (12 V, 2 A): em 12 V seriam 2,1 W contra 24 W |
 | [x] | Pesquisa sobre braille | `01-pesquisa-braille.md`; tabela conferida com a Grafia de 2018 e com o liblouis |
 | [x] | Arquitetura com punção de cima para baixo | `03-projeto-mecanico.md` |
 | [x] | Medidas num arquivo só | `cad/parametros.py` |

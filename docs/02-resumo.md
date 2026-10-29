@@ -6,11 +6,11 @@ Mega com RAMPS 1.4, dois motores de passo e um solenoide.
 **Para quê.** Impressoras braille comerciais custam milhares de dólares. Uma escola com cortadora a laser e
 impressora 3D consegue fazer esta com peças de impressora 3D comum.
 
-**De onde veio.** De um protótipo antigo da equipe, montado a partir do projeto aberto BrailleRAP, que nunca marcou
-o papel direito e ficou sem documentação.
+**De onde veio.** Do projeto aberto BrailleRAP: tiramos os arquivos dos repositórios públicos dele e melhoramos o
+projeto. A eletrônica, os motores e os eixos foram comprados a preço de sucata na Lixotec, em Foz do Iguaçu.
 
-**O que descobrimos.** O solenoide do protótipo é de 24 V e estava ligado em 12 V. A potência cai com o quadrado da
-tensão: sobravam 2,1 W dos 24 W que o projeto original usa. O mecanismo estava certo; faltava força.
+**O que descobrimos.** O nosso solenoide é a versão de 24 V, e a BrailleRAP usa a de 12 V. A potência cai com o
+quadrado da tensão: em 12 V sobrariam 2,1 W dos 24 W que o projeto original usa. O mecanismo serve; faltaria força.
 
 **O que mudou.**
 

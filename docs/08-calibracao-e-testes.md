@@ -90,8 +90,8 @@ Cada um tem uma variável que vocês mudam, uma que medem, e o resto fica igual.
 | O vai e vem piora o alinhamento? | `vaievem` 0 e 1 | degrau entre fileiras (lupa e régua) e tempo da linha | `$T 3` |
 | A velocidade afeta a posição? | `vx` de 60 a 200 | erro do passo em 10 celas | `$T 1` |
 
-A primeira linha da tabela de tensão (12 V) reproduz o defeito do projeto antigo: é a prova de que o problema era a
-alimentação do solenoide.
+A primeira linha da tabela de tensão (12 V) reproduz a tensão da BrailleRAP original: mostra quanto o
+nosso solenoide de 24 V perde se for ligado em 12 V.
 
 ## 7. Defeitos comuns
 
